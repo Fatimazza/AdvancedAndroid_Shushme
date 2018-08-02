@@ -24,8 +24,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 
 public class MainActivity extends AppCompatActivity implements
         ConnectionCallbacks, OnConnectionFailedListener {
@@ -53,7 +56,18 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter = new PlaceListAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        // TODO (4) Create a GoogleApiClient with the LocationServices API and GEO_DATA_API
+        // COMPLETED (4) Create a GoogleApiClient with the LocationServices API and GEO_DATA_API
+
+        // Build up the LocationServices API client
+        // Uses the addApi method to request the LocationServices API
+        // Also uses enableAutoManage to automatically when to connect/suspend the client
+        GoogleApiClient client = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, this)
+                .build();
     }
 
     // TODO (5) Override onConnected, onConnectionSuspended and onConnectionFailed for GoogleApiClient
